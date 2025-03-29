@@ -69,11 +69,32 @@ public class TaskManager {
     }
 
     // Удаление всех задач
+    public void clearAll() {
+        clearAllTasks();
+        clearAllSubtasks(); // Сначала подзадачи, так как они зависят от эпиков
+        clearAllEpics();
+    }
+
     public void clearAllTasks() {
         tasks.clear();
+    }
+    public void clearAllSubtasks() {
         subtasks.clear();
+
+        for (Epic epic : epics.values()) {
+            epic.getSubtaskIds().clear();
+            updateEpicStatus(epic.getId());
+        }
+    }
+    public void clearAllEpics() {
+        for (Epic epic : epics.values()) {
+            for (int subtaskId : epic.getSubtaskIds()) {
+                subtasks.remove(subtaskId);
+            }
+        }
         epics.clear();
     }
+
 
     // Удаление задачи по ID
     public boolean deleteTask(int id) {
