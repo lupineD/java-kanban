@@ -1,12 +1,14 @@
+package com.yandex.app.model;
+
 // Базовый класс для задачи
-class Task {
+public class Task {
     private int id;
     private String name;
     private String description;
     private Status status;
 
     public Task(String name, String description, Status status) {
-        this.id = id;
+        this.id = 0;
         this.name = name;
         this.description = description;
         this.status = status;
