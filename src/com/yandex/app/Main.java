@@ -1,46 +1,49 @@
 package com.yandex.app;
 
 import com.yandex.app.service.TaskManager;
+import com.yandex.app.service.InMemoryTaskManager;
+import com.yandex.app.service.Managers;
 import com.yandex.app.model.Task;
 import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Epic;
 
+import java.util.*;
+
 public class Main {
     public static void main(String[] args) {
-        TaskManager manager = new TaskManager();
+        TaskManager manager = Managers.getDefault();
 
-        // Добавляем задачи
-        int task1Id = manager.addTask(new Task("Пробежка", "Пробежать 5 км", Task.Status.NEW));
-        System.out.println("Создана задача: " + manager.getTask(task1Id));
-        int task2Id = manager.addTask(new Task("Купить абонемент в зал", "Выбрать зал рядом с домом", Task.Status.NEW));
-        System.out.println("Создана задача: " + manager.getTask(task2Id));
+        // Добавление тестовых данных
+        int taskId = manager.addTask(new Task("Task 1", "задача 1", Task.Status.NEW));
+        int epicId = manager.addEpic(new Epic("Epic 1", "Epic эпик", Task.Status.NEW));
+        int subtaskId = manager.addSubtask(new Subtask("Subtask 1", "подзадача", Task.Status.NEW, epicId));
 
-        // Добавляем эпик с подзадачами
-        int epic1Id = manager.addEpic(new Epic("Планирование поездки", "Организовать путешествие", Task.Status.NEW));
-        int subtask1Id = manager.addSubtask(new Subtask("Купить билеты", "Найти дешевые авиабилеты", Task.Status.NEW, epic1Id));
-        int subtask2Id = manager.addSubtask(new Subtask("Забронировать отель", "Отель в центре", Task.Status.NEW, epic1Id));
+        // Просмотр задач для наполнения истории
+        manager.getTask(taskId);
+        manager.getEpic(epicId);
+        manager.getSubtask(subtaskId);
 
-        // Выводим все задачи
-        System.out.println("=== Все задачи ===");
-        System.out.println("Обычные задачи: " + manager.getAllTasks());
-        System.out.println("Эпики: " + manager.getAllEpics());
-        System.out.println("Подзадачи: " + manager.getAllSubtasks());
+        // Вывод всех задач
+        printAllTasks(manager);
+    }
 
-        // Меняем статус подзадачи и проверяем эпик
-        Subtask subtask1 = manager.getSubtask(subtask1Id);
-        subtask1.setStatus(Task.Status.DONE);
-        manager.updateEpicStatus(epic1Id);  // Обновляем статус эпика
+    private static void printAllTasks(TaskManager manager) {
+        System.out.println("Задачи:");
+        manager.getAllTasks().forEach(System.out::println);
 
-        System.out.println("\n=== После изменения статуса подзадачи ===");
-        System.out.println(manager.getAllTasks());
-        System.out.println(manager.getAllEpics());
+        System.out.println("\nЭпики:");
+        manager.getAllEpics().forEach(epic -> {
+            System.out.println(epic);
+            manager.getEpicSubtasks(epic.getId()).forEach(subtask ->
+                    System.out.println("--> " + subtask));
+        });
 
-        // Удаляем задачу и эпик
-        manager.deleteTask(task1Id);
-        manager.deleteEpic(epic1Id);
+        System.out.println("\nПодзадачи:");
+        manager.getAllSubtasks().forEach(System.out::println);
 
-        System.out.println("\n=== После удаления ===");
-        System.out.println("Оставшиеся задачи: " + manager.getAllTasks());
-        System.out.println("Оставшиеся эпики: " + manager.getAllEpics());
+        System.out.println("\nИстория:");
+        manager.getHistory().forEach(System.out::println);
     }
 }
+
+
