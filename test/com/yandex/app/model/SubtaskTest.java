@@ -1,5 +1,4 @@
 package com.yandex.app.model;
-
 import com.yandex.app.service.TaskManager;
 import com.yandex.app.service.InMemoryTaskManager;
 import org.junit.jupiter.api.Test;

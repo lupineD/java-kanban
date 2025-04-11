@@ -1,9 +1,7 @@
 package com.yandex.app.service;
-
 import com.yandex.app.model.Epic;
 import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
-
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -17,13 +15,6 @@ public class InMemoryTaskManager implements TaskManager {
     public InMemoryTaskManager() {
         this.historyManager = new InMemoryHistoryManager();
     }
-
-//    @Override
-//    public int addTask(Task task) {
-//        task.setId(nextId++);
-//        tasks.put(task.getId(), task);
-//        return task.getId();
-//    }
 
     @Override
     public int addTask(Task task) {

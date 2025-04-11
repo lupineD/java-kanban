@@ -1,10 +1,8 @@
 package com.yandex.app.service;
-
 import com.yandex.app.model.Task;
 import com.yandex.app.model.Task.Status;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.*;
 
 class HistoryManagerTest {

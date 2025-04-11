@@ -1,9 +1,7 @@
 package com.yandex.app.service;
-
 import com.yandex.app.model.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
 class InMemoryTaskManagerTest {
 
     //проверьте, что InMemoryTaskManager действительно добавляет задачи разного типа и может найти их по id;
